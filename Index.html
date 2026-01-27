@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recs & Settlement Weekly Update</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React Dependencies -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Recharts Dependencies -->
+    <script src="https://unpkg.com/prop-types@15.8.1/prop-types.min.js"></script>
+    <script src="https://unpkg.com/recharts@2.12.7/umd/Recharts.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@0.378.0/dist/umd/lucide.min.js"></script>
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        body { background-color: #f8fafc; margin: 0; font-family: sans-serif; }
+        .recharts-default-tooltip { border-radius: 12px !important; border: none !important; box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1) !important; padding: 12px !important; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        #root { min-height: 100vh; display: flex; flex-direction: column; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { 
+            BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
+            LineChart, Line, ComposedChart, Legend
+        } = window.Recharts;
+
+        const Icon = ({ name, color = "currentColor", size = 20, className = "" }) => {
+            const ref = React.useRef(null);
+            React.useEffect(() => {
+                if (ref.current && window.lucide) {
+                    ref.current.innerHTML = `<i data-lucide="${name}"></i>`;
+                    window.lucide.createIcons({
+                        attrs: { stroke: color, 'stroke-width': 2.5, width: size, height: size }
+                    });
+                }
+            }, [name, color, size]);
+            return <span ref={ref} className={`${className} inline-flex items-center justify-center`} />;
+        };
+
+        const App = () => {
+            // Data for Week Ending 23 Jan 2026 (Mon-Fri)
+            const combinedDailyData = [
+                { date: 'Mon 19', trans: 123824, settled: -2020420.22 },
+                { date: 'Tue 20', trans: 54447, settled: 644126.29 },
+                { date: 'Wed 21', trans: 53474, settled: 1332268.53 },
+                { date: 'Thu 22', trans: 54173, settled: 608198.53 },
+                { date: 'Fri 23', trans: 68834, settled: 4948896.88 },
+            ];
+
+            const schemePerformance = [
+                { name: 'Combined FPS', transactions: 354752, settled: 5513070.01, colour: '#3b82f6', icon: 'zap', change: '-0.7%', amountDiff: '-2.5k', volChange: 'down' },
+                { name: 'Combined BACS', transactions: 48066, settled: 35823104.33, colour: '#8b5cf6', icon: 'landmark', change: '-1.3%', amountDiff: '+£10.9M', volChange: 'down' },
+                { name: 'Combined Cards', transactions: 303832, settled: -17072782.17, colour: '#6366f1', icon: 'credit-card', change: '+1.6%', amountDiff: '+4.7k', volChange: 'up' },
+                { name: 'Combined Cash', transactions: 1949, settled: 565411.45, colour: '#10b981', icon: 'banknote', change: '+1.0%', amountDiff: '+20', volChange: 'up' },
+            ];
+
+            const clientData = [
+                {
+                    client: 'Mettle',
+                    totalTrans: 705212,
+                    totalValue: 22468800,
+                    accent: '#3b82f6',
+                    recsStatus: 'Reconciled',
+                    schemes: [
+                        { name: 'FPS', trans: 353044, value: 3589661, colour: '#3b82f6' },
+                        { name: 'BACS', trans: 46387, value: 35386510, colour: '#8b5cf6' },
+                        { name: 'Cards', trans: 303832, value: -17072782, colour: '#6366f1' },
+                        { name: 'Cash', trans: 1949, value: 565411, colour: '#10b981' },
+                    ],
+                    commentary: "Massive liquidity jump in BACS inflows (£35.4M), providing excellent coverage for all card liabilities. 📈"
+                },
+                {
+                    client: 'The AA',
+                    totalTrans: 2397,
+                    totalValue: -6239946,
+                    accent: '#f59e0b',
+                    recsStatus: 'Reconciled',
+                    schemes: [
+                        { name: 'FPS (Lending)', trans: 469, value: -6503302, colour: '#f59e0b' },
+                        { name: 'FPS (Savings)', trans: 249, value: -173238, colour: '#fbbf24' },
+                        { name: 'Direct Debits', trans: 1679, value: 436594, colour: '#d97706' },
+                    ],
+                    commentary: "Loan disbursements settled at a healthy £6.5M this week. All items reconciled with zero breaks. 🚀"
+                },
+                {
+                    client: 'SAGA',
+                    totalTrans: 989,
+                    totalValue: 8599948,
+                    accent: '#ec4899',
+                    recsStatus: 'Reconciled',
+                    schemes: [
+                        { name: 'FPS', trans: 989, value: 8599948, colour: '#ec4899' },
+                    ],
+                    commentary: "Record scaling week for SAGA, processing nearly 1,000 transactions totalling £8.6M. 🚀"
+                },
+                {
+                    client: 'NW Retail',
+                    totalTrans: 1,
+                    totalValue: -0.1,
+                    accent: '#64748b',
+                    recsStatus: 'Reconciled',
+                    schemes: [
+                        { name: 'FPS', trans: 1, value: -0.1, colour: '#64748b' },
+                    ],
+                    commentary: "Standard test item processed. Reconciliation verified instantly. ✅"
+                }
+            ];
+
+            const formatCurrency = (val) => {
+                const absVal = Math.abs(val);
+                // Precision for values too low to be rounded to whole pounds
+                const useDecimals = absVal > 0 && absVal < 1;
+                return new Intl.NumberFormat('en-GB', { 
+                    style: 'currency', 
+                    currency: 'GBP', 
+                    maximumFractionDigits: useDecimals ? 2 : 0,
+                    minimumFractionDigits: useDecimals ? 2 : 0
+                }).format(val);
+            };
+
+            const StatCard = ({ scheme }) => (
+                <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col justify-between transition-all hover:ring-2 hover:ring-blue-500/10">
+                    <div className="flex justify-between items-center mb-3">
+                        <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{scheme.name}</p>
+                        <div className="p-1.5 rounded-lg" style={{ backgroundColor: `${scheme.colour}10` }}>
+                            <Icon name={scheme.icon} color={scheme.colour} size={16} />
+                        </div>
+                    </div>
+                    <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                            <h3 className="text-xl font-black text-slate-800 tabular-nums leading-none tracking-tight">
+                                {scheme.transactions.toLocaleString()}
+                            </h3>
+                            <div className={`flex flex-col items-end text-[9px] font-black ${scheme.volChange === 'up' ? 'text-emerald-500' : 'text-rose-500'}`}>
+                                <div className="flex items-center">
+                                    <Icon name={scheme.volChange === 'up' ? 'arrow-up' : 'arrow-down'} color="currentColor" size={10} className="mr-0.5" />
+                                    {scheme.change}
+                                </div>
+                                <span className="text-[8px] opacity-70">{scheme.amountDiff} vol.</span>
+                            </div>
+                        </div>
+                        <div className="pt-2 border-t border-slate-50 flex items-center justify-between">
+                            <span className="text-[9px] font-black text-emerald-500 uppercase tracking-tighter">Reconciled</span>
+                            <h3 className={`text-sm font-black tabular-nums leading-none ${scheme.settled < 0 ? 'text-rose-600' : 'text-emerald-600'}`}>
+                                {formatCurrency(scheme.settled)}
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            );
+
+            return (
+                <div className="min-h-screen bg-[#f8fafc] font-sans text-slate-900 flex flex-col w-full overflow-x-hidden p-4 lg:p-6">
+                    {/* Header */}
+                    <div className="w-full bg-white border border-slate-200 rounded-2xl px-6 py-4 flex items-center justify-between shadow-sm mb-6">
+                        <div className="flex items-center gap-4">
+                            <div className="p-2.5 bg-[#002d72] rounded-xl text-white shadow-md shadow-blue-900/20">
+                                <Icon name="globe" color="white" size={24} />
+                            </div>
+                            <div>
+                                <h1 className="text-xl font-black text-slate-900 tracking-tight uppercase leading-none">
+                                    NatWest Boxed <span className="text-slate-300 font-normal mx-1">|</span> <span className="text-[#002d72]">Recs & Settlement</span>
+                                </h1>
+                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Week Ending 23 January 2026</p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-2 bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-full border border-emerald-100">
+                            <div className="h-1.5 w-1.5 bg-emerald-500 rounded-full animate-pulse"></div>
+                            <span className="text-[10px] font-black uppercase tracking-wider">Zero Breaks Maintained</span>
+                        </div>
+                    </div>
+
+                    <div className="flex-1 space-y-6 w-full max-w-[1600px] mx-auto">
+                        <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+                            
+                            {/* LHS - Metrics & Chart */}
+                            <div className="xl:col-span-8 space-y-6">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                    {schemePerformance.map((scheme, idx) => (
+                                        <StatCard key={idx} scheme={scheme} />
+                                    ))}
+                                </div>
+
+                                <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 transition-all">
+                                    <div className="mb-6 flex justify-between items-end">
+                                        <div>
+                                            <h3 className="text-lg font-black text-slate-800 flex items-center gap-2">
+                                                <Icon name="activity" color="#002d72" size={20} /> Daily Settlement Profile
+                                            </h3>
+                                            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">Aggregated Flow across Portfolios</p>
+                                        </div>
+                                        <div className="flex gap-4 text-[9px] font-black uppercase tracking-widest text-slate-400">
+                                            <div className="flex items-center gap-1.5"><div className="h-2 w-2 bg-slate-200 rounded-full"></div> Vol.</div>
+                                            <div className="flex items-center gap-1.5"><div className="h-2 w-2 bg-blue-600 rounded-full"></div> Settlement</div>
+                                        </div>
+                                    </div>
+                                    <div className="h-[380px]">
+                                        <ResponsiveContainer width="100%" height="100%">
+                                            <ComposedChart data={combinedDailyData} margin={{ top: 5, right: 10, left: -10, bottom: 0 }}>
+                                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                                                <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{fill: '#94a3b8', fontSize: 10, fontWeight: 700}} dy={10} />
+                                                <YAxis yAxisId="left" axisLine={false} tickLine={false} tick={{fill: '#94a3b8', fontSize: 10}} />
+                                                <YAxis yAxisId="right" orientation="right" axisLine={false} tickLine={false} tick={{fill: '#94a3b8', fontSize: 10}} tickFormatter={(value) => `£${Math.round(value/1000000)}M`} />
+                                                <Tooltip 
+                                                    cursor={{ fill: '#f8fafc' }} 
+                                                    contentStyle={{borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)'}}
+                                                    formatter={(value, name) => [name === 'Settled' ? formatCurrency(value) : value.toLocaleString(), name]} 
+                                                />
+                                                <Bar yAxisId="left" dataKey="trans" name="Transactions" fill="#e2e8f0" radius={[6, 6, 0, 0]} barSize={40} />
+                                                <Line yAxisId="right" type="monotone" dataKey="settled" name="Settled" stroke="#002d72" strokeWidth={4} dot={{fill: '#002d72', r: 5, strokeWidth: 2, stroke: '#fff'}} />
+                                            </ComposedChart>
+                                        </ResponsiveContainer>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* RHS - Intelligence Sidebar */}
+                            <div className="xl:col-span-4 flex flex-col gap-6">
+                                <div className="bg-[#002d72] text-white p-6 rounded-2xl shadow-lg border border-blue-900 flex-1 flex flex-col">
+                                    <h4 className="text-[10px] font-black text-blue-300 uppercase tracking-widest mb-4 flex items-center gap-2">
+                                        <Icon name="info" color="#93c5fd" size={16} /> Key Portfolio Events
+                                    </h4>
+                                    <div className="space-y-4 overflow-y-auto pr-2 hide-scrollbar flex-1">
+                                        <div className="pb-3 border-b border-blue-800/50">
+                                            <p className="text-[9px] font-black text-emerald-400 uppercase tracking-widest mb-1.5">Weekly Liquidity</p>
+                                            <div className="space-y-2 text-[11px]">
+                                                <p className="font-semibold">Mettle BACS Inflow: <span className="text-emerald-400">£35.4M</span></p>
+                                                <p className="font-semibold">Combined Inflows covering <span className="text-blue-300">£17.1M</span> Card liabilities.</p>
+                                            </div>
+                                        </div>
+
+                                        <div className="pb-3">
+                                            <p className="text-[9px] font-black text-rose-400 uppercase tracking-widest mb-1.5 underline">Active Rec Breaks</p>
+                                            <div className="space-y-3 text-[11px]">
+                                                <div className="bg-blue-800/30 p-2 rounded-lg border border-blue-700/50">
+                                                    <div className="flex justify-between items-start mb-1">
+                                                        <p className="font-black text-white">POB-550 | AA FPS</p>
+                                                        <span className="bg-rose-500 text-[8px] px-1 rounded text-white font-bold uppercase">Open</span>
+                                                    </div>
+                                                    <p className="text-blue-200 leading-tight">£1,000 return discrepancy. Return of a return on scheme but not Genie. Awaiting Interbank response.</p>
+                                                </div>
+                                                <div className="bg-blue-800/30 p-2 rounded-lg border border-blue-700/50">
+                                                    <div className="flex justify-between items-start mb-1">
+                                                        <p className="font-black text-white">POB-547 | AA BACS</p>
+                                                        <span className="bg-rose-500 text-[8px] px-1 rounded text-white font-bold uppercase">Open</span>
+                                                    </div>
+                                                    <p className="text-blue-200 leading-tight">£584.38 DDIC issue. Customer accounts not debited to counter settlement on 20/01.</p>
+                                                </div>
+                                                <div className="bg-blue-800/30 p-2 rounded-lg border border-blue-700/50 opacity-60">
+                                                    <div className="flex justify-between items-start mb-1">
+                                                        <p className="font-black text-slate-300">POB-546 | AA FPS</p>
+                                                        <span className="bg-emerald-500 text-[8px] px-1 rounded text-white font-bold uppercase">Closed</span>
+                                                    </div>
+                                                    <p className="text-slate-400 leading-tight">£81 rejected item reversal. Checked on portal and confirmed. Resolved 21/01.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="mt-4 pt-4 border-t border-blue-800/50 flex items-center justify-between">
+                                        <span className="text-[9px] font-bold text-blue-400 uppercase tracking-widest">Recs Status: Verified</span>
+                                        <Icon name="check-circle" color="#10b981" size={14} />
+                                    </div>
+                                </div>
+
+                                <div className="bg-slate-50 border border-slate-200 p-5 rounded-2xl flex flex-col gap-3">
+                                    <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-200 pb-2">Operational Insights</h4>
+                                    <div className="space-y-3">
+                                        {[
+                                            { tag: 'LIQUIDITY', text: "Massive jump in BACS inflows providing substantial settlement coverage for core accounts. 📈" },
+                                            { tag: 'SAGA', text: "Successfully scaled to 989 weekly transactions. No breaks detected during transition. ✅" },
+                                            { tag: 'AA', text: "Steady disbursement cycle post-peak. Mon/Fri remained the busiest hubs. 🚀" }
+                                        ].map((item, i) => (
+                                            <div key={i} className="bg-white p-3 rounded-xl border border-slate-100 shadow-sm text-[11px] font-semibold text-slate-700 leading-snug">
+                                                <span className="text-[#002d72] font-black mr-1 uppercase text-[9px]">{item.tag}:</span> {item.text}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Section 3 - Client Deep Dive */}
+                        <div className="space-y-4 pb-8 w-full">
+                            <h3 className="text-lg font-black text-slate-800 flex items-center gap-2 mb-2 uppercase tracking-wider">
+                                <Icon name="users" color="#f59e0b" size={20} /> Client Performance
+                            </h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                {clientData.map((client, idx) => (
+                                    <div key={idx} className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col hover:shadow-md transition-all group">
+                                        <div className="p-5 border-b border-slate-50 relative" style={{ backgroundColor: `${client.accent}08` }}>
+                                            <div className="flex justify-between items-start">
+                                                <h4 className="text-lg font-black text-slate-900 tracking-tighter uppercase">{client.client}</h4>
+                                                <div className="h-1.5 w-1.5 bg-emerald-500 rounded-full"></div>
+                                            </div>
+                                            <div className="flex items-center justify-between mt-4">
+                                                <div>
+                                                    <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Transactions</p>
+                                                    <p className="text-sm font-black text-slate-800 tabular-nums">{client.totalTrans.toLocaleString()}</p>
+                                                </div>
+                                                <div className="text-right">
+                                                    <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Total Value</p>
+                                                    <p className={`text-sm font-black tabular-nums ${client.totalValue < 0 ? 'text-rose-500' : 'text-emerald-500'}`}>
+                                                        {formatCurrency(client.totalValue)}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="p-5 space-y-2.5 flex-grow bg-white">
+                                            {client.schemes.map((scheme, sIdx) => (
+                                                <div key={sIdx} className="flex items-center justify-between p-1.5 rounded-lg hover:bg-slate-50 transition-colors">
+                                                    <div className="flex items-center gap-2 text-[10px] font-bold text-slate-600 uppercase tracking-tight">
+                                                        <div className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: scheme.colour }}></div>
+                                                        {scheme.name}
+                                                    </div>
+                                                    <p className={`text-[10px] font-black ${scheme.value < 0 ? 'text-rose-500' : 'text-emerald-600'}`}>
+                                                        {formatCurrency(scheme.value)}
+                                                    </p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <div className="p-4 bg-slate-50/80 border-t border-slate-100 min-h-[80px] flex items-center">
+                                            <p className="text-[10px] text-slate-500 leading-relaxed font-semibold italic text-center w-full">
+                                                "{client.commentary}"
+                                            </p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="w-full text-center pt-4 opacity-40">
+                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic text-center underline">Goals for 2026: Scaling Safely & Automating Manual Touchpoints</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

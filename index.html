@@ -24,7 +24,6 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        // Safe destructuring of Recharts components
         const { 
             BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
             LineChart, Line, ComposedChart, Legend, ReferenceLine
@@ -80,13 +79,13 @@
                     totalTrans: 2689,
                     totalValue: -6736539.90,
                     accent: '#f59e0b',
-                    recsStatus: 'Investigating',
+                    recsStatus: 'Reconciled',
                     schemes: [
                         { name: 'FPS (Lending)', trans: 609, value: -8682643, colour: '#f59e0b' },
                         { name: 'FPS (Savings)', trans: 220, value: 1425642.67, colour: '#fbbf24' },
                         { name: 'BACS (Combined)', trans: 1860, value: 520460.43, colour: '#d97706' },
                     ],
-                    commentary: "Lending disbursements reached £8.68M. Monitoring two active investigations related to scheme returns and DDIC processing. 🚀"
+                    commentary: "Lending disbursements reached £8.68M. All breaks raised during the period have been successfully investigated and closed. 🚀"
                 },
                 {
                     client: 'SAGA',
@@ -129,7 +128,7 @@
             const offset = maxVal / (maxVal - minVal);
 
             return (
-                <div className="min-h-screen bg-[#f8fafc] font-sans text-slate-900 flex flex-col w-full overflow-x-hidden p-4 lg:p-6">
+                <div className="min-h-screen bg-[#f8fafc] font-sans text-slate-900 flex flex-col w-full overflow-x-hidden p-4 lg:p-6 text-slate-800">
                     {/* Header */}
                     <div className="w-full bg-white border border-slate-200 rounded-2xl px-6 py-4 flex items-center justify-between shadow-sm mb-6">
                         <div className="flex items-center gap-4">
@@ -143,16 +142,16 @@
                                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Week Ending 30 January 2026</p>
                             </div>
                         </div>
-                        <div className="flex items-center gap-2 bg-amber-50 text-amber-700 px-3 py-1.5 rounded-full border border-amber-200">
-                            <div className="h-1.5 w-1.5 bg-amber-500 rounded-full animate-pulse"></div>
-                            <span className="text-[10px] font-black uppercase tracking-wider">Active Breaks Pending</span>
+                        <div className="flex items-center gap-2 bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-full border border-emerald-200">
+                            <div className="h-1.5 w-1.5 bg-emerald-500 rounded-full animate-pulse"></div>
+                            <span className="text-[10px] font-black uppercase tracking-wider">All Weekly Breaks Resolved</span>
                         </div>
                     </div>
 
                     <div className="flex-1 space-y-6 w-full max-w-[1600px] mx-auto flex flex-col">
                         <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
                             
-                            {/* LHS - Metrics, Chart & Operational Context */}
+                            {/* LHS - Metrics, Chart & Operational Summary */}
                             <div className="xl:col-span-8 flex flex-col gap-6">
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                                     {schemePerformance.map((scheme, idx) => (
@@ -200,7 +199,7 @@
                                             <div className="flex items-center gap-1.5"><div className="h-2.5 w-2.5 bg-[#ef4444] rounded-full"></div> Settlement (Debit)</div>
                                         </div>
                                     </div>
-                                    <div className="h-[320px] pt-4">
+                                    <div className="h-[300px] pt-4">
                                         <ResponsiveContainer width="100%" height="100%">
                                             <ComposedChart data={combinedDailyData} margin={{ top: 10, right: 30, left: -10, bottom: 0 }}>
                                                 <defs>
@@ -236,13 +235,7 @@
                                                     strokeWidth={5} 
                                                     dot={(props) => {
                                                         const { cx, cy, value } = props;
-                                                        return (
-                                                            <circle 
-                                                                cx={cx} cy={cy} r={6} 
-                                                                fill={value < 0 ? "#ef4444" : "#10b981"} 
-                                                                stroke="#fff" strokeWidth={2} 
-                                                            />
-                                                        );
+                                                        return <circle cx={cx} cy={cy} r={6} fill={value < 0 ? "#ef4444" : "#10b981"} stroke="#fff" strokeWidth={2} />;
                                                     }}
                                                 />
                                             </ComposedChart>
@@ -250,80 +243,94 @@
                                     </div>
                                 </div>
 
-                                {/* Operational Context (Moved from Sidebar) */}
-                                <div className="bg-slate-50 border border-slate-200 p-6 rounded-2xl flex-1">
-                                    <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-200 pb-3 mb-4 flex items-center gap-2">
-                                        <Icon name="message-square" color="#94a3b8" size={14} /> Operational Summary & Insights
+                                {/* Operational Summary Section */}
+                                <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex-1">
+                                    <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-200 pb-3 mb-5 flex items-center gap-2">
+                                        <Icon name="message-square" color="#94a3b8" size={14} /> Operational Summary & Portfolio Insights
                                     </h4>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        {[
-                                            { tag: 'SAGA SCALING', text: "Record month-end scaling reached nearly £14M this week. This significant volume increase was managed through standard daily processing windows without any discrepancies identified between internal system records and scheme reporting. ✅" },
-                                            { tag: 'AA DISBURSEMENTS', text: "Lending disbursements remained high at £8.68M across 609 unique payouts. The operations team conducted manual validation of these high-value outflows to ensure 100% auditability and settlement accuracy. 🚀" },
-                                            { tag: 'METTLE LIQUIDITY', text: "Peak card expenditure reached -£17.48M during the month-end cycle. This was successfully supported by robust BACS liquidity inflows. Daily reconciliation was prioritised to ensure the net-outflow position remained within agreed limits. 📈" },
-                                            { tag: 'STATIC PORTFOLIOS', text: "The NatWest Retail and Dragenox portfolios were closely monitored throughout the weekly cycle; however, no transaction activity was recorded. All static balances have been verified as fully reconciled. ✅" }
-                                        ].map((item, i) => (
-                                            <div key={i} className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col gap-1.5">
-                                                <span className="text-[#002d72] font-black uppercase text-[10px] tracking-wider">{item.tag}</span>
-                                                <p className="text-[11px] font-medium text-slate-600 leading-relaxed">{item.text}</p>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div className="space-y-4">
+                                            <div className="flex flex-col gap-1.5">
+                                                <span className="text-[#002d72] font-black uppercase text-[10px] tracking-wider">Month-End Scaling Strategy</span>
+                                                <p className="text-[11px] font-medium text-slate-600 leading-relaxed">
+                                                    SAGA scaling continues to scale significantly, reaching nearly £14 million in weekly payments. This transition has been managed effectively through standard daily operating cycles, with internal system records and scheme reporting showing 100% alignment. No external breaks were reported throughout this high-volume month-end period.
+                                                </p>
                                             </div>
-                                        ))}
+                                            <div className="flex flex-col gap-1.5">
+                                                <span className="text-[#002d72] font-black uppercase text-[10px] tracking-wider">AA Lending Validation</span>
+                                                <p className="text-[11px] font-medium text-slate-600 leading-relaxed">
+                                                    Lending disbursements for the AA portfolio totalled £8.68 million across 609 unique payouts. The operations team conducted manual validation of these high-value outflows against scheme files to ensure full auditability and ensure settlement precision, reconciling all items within the required timeframes.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="space-y-4">
+                                            <div className="flex flex-col gap-1.5">
+                                                <span className="text-[#002d72] font-black uppercase text-[10px] tracking-wider">Mettle Liquidity & Card Spend</span>
+                                                <p className="text-[11px] font-medium text-slate-600 leading-relaxed">
+                                                    Card expenditure reached its month-end peak of -£17.48 million. This position was successfully supported by robust BACS liquidity inflows of over £24.7 million. Daily reconciliation tasks were prioritised to ensure the net-outflow position remained within our agreed risk appetite and internal system limits.
+                                                </p>
+                                            </div>
+                                            <div className="flex flex-col gap-1.5">
+                                                <span className="text-[#002d72] font-black uppercase text-[10px] tracking-wider">Break Management & Incident Response</span>
+                                                <p className="text-[11px] font-medium text-slate-600 leading-relaxed">
+                                                    Four new breaks were raised and successfully resolved within the week. These were identified as temporary discrepancies caused by report processing delays, late entries, or transient system incidents. All weekly items (POB-552, 553, 554, and the Cash break) were accounted for and closed before the week-end close.
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            {/* RHS - Detailed Sidebar */}
+                            {/* RHS - Sidebar with requested breaks only */}
                             <div className="xl:col-span-4 flex flex-col gap-6">
-                                <div className="bg-[#002d72] text-white p-6 rounded-2xl shadow-lg border border-blue-900 flex-1 flex flex-col">
-                                    <h4 className="text-[10px] font-black text-blue-300 uppercase tracking-widest mb-4 flex items-center gap-2">
-                                        <Icon name="info" color="#93c5fd" size={16} /> Detailed Rec Breaks Tracker
+                                <div className="bg-[#002d72] text-white p-6 rounded-2xl shadow-lg border border-blue-900 flex-1 flex flex-col overflow-hidden">
+                                    <h4 className="text-[10px] font-black text-blue-300 uppercase tracking-widest mb-4 flex items-center gap-2 shrink-0">
+                                        <Icon name="info" color="#93c5fd" size={16} /> Breaks Raised Last Week
                                     </h4>
-                                    <div className="space-y-4 overflow-y-auto pr-2 hide-scrollbar flex-1">
+                                    <div className="space-y-5 overflow-y-auto pr-2 hide-scrollbar flex-1">
                                         
-                                        <div className="pb-3 border-b border-blue-800/50">
-                                            <p className="text-[9px] font-black text-rose-400 uppercase tracking-widest mb-2 underline">Active Investigations (Open)</p>
-                                            <div className="space-y-3 text-[11px]">
-                                                <div className="bg-blue-800/30 p-2.5 rounded-lg border border-blue-700/50">
-                                                    <div className="flex justify-between items-start mb-1">
-                                                        <p className="font-black text-white">POB-550 | AA FPS | £1,000</p>
-                                                        <span className="bg-rose-500 text-[8px] px-1 rounded text-white font-bold uppercase tracking-tighter">Open</span>
-                                                    </div>
-                                                    <p className="text-blue-100 leading-tight mb-1.5 font-medium italic">"Return of a return" logic mismatch.</p>
-                                                    <p className="text-[10px] text-blue-200 leading-tight">Discrepancy identified in AA settlement account balance. Engineering teams are investigating a specific sequence of returns; we are maintaining the break due to a £1,000 variance remaining after all daily cycles completed.</p>
+                                        <div className="space-y-3.5 text-[11px]">
+                                            <div className="bg-blue-800/30 p-3 rounded-xl border border-blue-700/50 shadow-sm opacity-90 hover:opacity-100 transition-opacity">
+                                                <div className="flex justify-between items-start mb-1.5">
+                                                    <p className="font-black text-white leading-none">POB-552 | AA BACS | £2,941.38</p>
+                                                    <span className="bg-emerald-500 text-[8px] px-1.5 py-0.5 rounded text-white font-bold uppercase tracking-tighter">Closed</span>
                                                 </div>
-                                                <div className="bg-blue-800/30 p-2.5 rounded-lg border border-blue-700/50">
-                                                    <div className="flex justify-between items-start mb-1">
-                                                        <p className="font-black text-white">POB-547 | AA BACS | £584.38</p>
-                                                        <span className="bg-rose-500 text-[8px] px-1 rounded text-white font-bold uppercase tracking-tighter">Open</span>
-                                                    </div>
-                                                    <p className="text-blue-100 leading-tight mb-1.5 font-medium italic">DDIC Challenge Settlement Failure.</p>
-                                                    <p className="text-[10px] text-blue-200 leading-tight">Two £292.19 direct debit indemnity claims (DDICs) were formally challenged but proceeded to settle. Corresponding account debits were not initiated, resulting in an imbalance on the AA DDIC suspense ledger.</p>
+                                                <p className="text-blue-100 leading-tight mb-1.5 font-medium italic">ARRUD Report Processing.</p>
+                                                <p className="text-[10px] text-blue-200 leading-relaxed">Identified that the report from Friday 23/01 was not processed correctly. Raised with payment processing and successfully resolved on 27/01.</p>
+                                            </div>
+
+                                            <div className="bg-blue-800/30 p-3 rounded-xl border border-blue-700/50 shadow-sm opacity-90 hover:opacity-100 transition-opacity">
+                                                <div className="flex justify-between items-start mb-1.5">
+                                                    <p className="font-black text-white leading-none">POB-554 | Mettle FPS | £2,525</p>
+                                                    <span className="bg-emerald-500 text-[8px] px-1.5 py-0.5 rounded text-white font-bold uppercase tracking-tighter">Closed</span>
                                                 </div>
+                                                <p className="text-blue-100 leading-tight mb-1.5 font-medium italic">Standing Order Incident.</p>
+                                                <p className="text-[10px] text-blue-200 leading-relaxed">Six standing orders completed later than expected due to a transient system incident. Interbank confirmed the fix and all transactions were verified as accounted for on 27/01.</p>
+                                            </div>
+
+                                            <div className="bg-blue-800/30 p-3 rounded-xl border border-blue-700/50 shadow-sm opacity-90 hover:opacity-100 transition-opacity">
+                                                <div className="flex justify-between items-start mb-1.5">
+                                                    <p className="font-black text-white leading-none">POB-553 | AA Caustic | £306.18</p>
+                                                    <span className="bg-emerald-500 text-[8px] px-1.5 py-0.5 rounded text-white font-bold uppercase tracking-tighter">Closed</span>
+                                                </div>
+                                                <p className="text-blue-100 leading-tight mb-1.5 font-medium italic">NW Boxed Late Entry.</p>
+                                                <p className="text-[10px] text-blue-200 leading-relaxed">Discrepancy identified following a late entry. Confirmed as an 'On Us' item and funds were correctly applied to the customer loan repayment suspense account on 29/01.</p>
+                                            </div>
+
+                                            <div className="bg-blue-800/30 p-3 rounded-xl border border-blue-700/50 shadow-sm opacity-90 hover:opacity-100 transition-opacity">
+                                                <div className="flex justify-between items-start mb-1.5">
+                                                    <p className="font-black text-white leading-none">POB-557 | Mettle Cash | £500.00</p>
+                                                    <span className="bg-emerald-500 text-[8px] px-1.5 py-0.5 rounded text-white font-bold uppercase tracking-tighter">Closed</span>
+                                                    </div>
+                                                <p className="text-blue-100 leading-tight mb-1.5 font-medium italic">Suspense Routing Error.</p>
+                                                <p className="text-[10px] text-blue-200 leading-relaxed">A payment was incorrectly routed to suspense rather than the customer account. Investigated with Interbank and credited to the customer on 30/01.</p>
                                             </div>
                                         </div>
 
-                                        <div className="pb-3">
-                                            <p className="text-[9px] font-black text-emerald-400 uppercase tracking-widest mb-2 underline">Successfully Resolved</p>
-                                            <div className="space-y-3 text-[11px]">
-                                                <div className="bg-blue-800/20 p-2 rounded-lg border border-blue-700/30 opacity-70">
-                                                    <div className="flex justify-between items-start mb-1">
-                                                        <p className="font-black text-slate-300">POB-554 | Mettle FPS | £2,525</p>
-                                                        <span className="bg-emerald-500 text-[8px] px-1 rounded text-white font-bold uppercase tracking-tighter">Closed</span>
-                                                    </div>
-                                                    <p className="text-[10px] text-slate-400 leading-tight">Six Standing Order delays confirmed as a soft break following a transient system incident. All transactions were verified as accounted for and fully reconciled on 27/01.</p>
-                                                </div>
-                                                <div className="bg-blue-800/20 p-2 rounded-lg border border-blue-700/30 opacity-70">
-                                                    <div className="flex justify-between items-start mb-1">
-                                                        <p className="font-black text-slate-300">POB-553 | NW Boxed | £306.18</p>
-                                                        <span className="bg-emerald-500 text-[8px] px-1 rounded text-white font-bold uppercase tracking-tighter">Closed</span>
-                                                    </div>
-                                                    <p className="text-[10px] text-slate-400 leading-tight">Mismatched entry caused by a timing delay. Discrepancy was resolved through a manual adjustment to the customer loan repayment suspense account on 29/01.</p>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
-                                    <div className="mt-4 pt-4 border-t border-blue-800/50 flex items-center justify-between text-blue-300 italic">
-                                        <span className="text-[9px] font-bold uppercase tracking-widest">Awaiting Engineering Updates</span>
-                                        <Icon name="clock" color="#f59e0b" size={14} />
+                                    <div className="mt-4 pt-4 border-t border-blue-800/50 flex items-center justify-between text-blue-300 italic shrink-0">
+                                        <span className="text-[9px] font-bold uppercase tracking-widest">Team Performance Status: Excellent</span>
+                                        <Icon name="check-circle" color="#10b981" size={14} />
                                     </div>
                                 </div>
                             </div>
@@ -340,15 +347,15 @@
                                         <div className="p-5 border-b border-slate-50 relative" style={{ backgroundColor: `${client.accent}08` }}>
                                             <div className="flex justify-between items-start">
                                                 <h4 className="text-lg font-black text-slate-900 tracking-tighter uppercase">{client.client}</h4>
-                                                <div className={`h-1.5 w-1.5 rounded-full ${client.recsStatus === 'Reconciled' ? 'bg-emerald-500' : 'bg-amber-500 animate-pulse'}`}></div>
+                                                <div className={`h-1.5 w-1.5 rounded-full ${client.recsStatus === 'Reconciled' ? 'bg-emerald-500' : 'bg-emerald-500'}`}></div>
                                             </div>
                                             <div className="flex items-center justify-between mt-4">
                                                 <div>
-                                                    <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Transactions</p>
+                                                    <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest text-slate-400 font-bold">Transactions</p>
                                                     <p className="text-sm font-black text-slate-800 tabular-nums">{client.totalTrans.toLocaleString()}</p>
                                                 </div>
                                                 <div className="text-right">
-                                                    <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Total Value</p>
+                                                    <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest text-slate-400 font-bold">Total Value</p>
                                                     <p className={`text-sm font-black tabular-nums ${client.totalValue < 0 ? 'text-rose-500' : 'text-emerald-500'}`}>
                                                         {formatCurrency(client.totalValue)}
                                                     </p>

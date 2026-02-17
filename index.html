@@ -43,76 +43,71 @@
         };
 
         const App = () => {
-            // Data for Week Ending 6 Feb 2026
+            // Data for Week Ending 13 Feb 2026 (Mon-Fri)
             const combinedDailyData = [
-                { date: 'Mon 02', trans: 192481, settled: -13954973.25 },
-                { date: 'Tue 03', trans: 65564, settled: 7121691.43 },
-                { date: 'Wed 04', trans: 61149, settled: 6181223.06 },
-                { date: 'Thu 05', trans: 62641, settled: 5838210.48 },
-                { date: 'Fri 06', trans: 75720, settled: 8709126.65 },
+                { date: 'Mon 09', trans: 130740, settled: 7411466 },
+                { date: 'Tue 10', trans: 58037, settled: 5450704 },
+                { date: 'Wed 11', trans: 55682, settled: 5514653 },
+                { date: 'Thu 12', trans: 57104, settled: 6684010 },
+                { date: 'Fri 13', trans: 73017, settled: 11775668 },
             ];
+
+            const formatCurrency = (val) => {
+                const absVal = Math.abs(val);
+                const showDecimals = absVal < 1000;
+                return new Intl.NumberFormat('en-GB', { 
+                    style: 'currency', 
+                    currency: 'GBP', 
+                    maximumFractionDigits: showDecimals ? 2 : 0,
+                    minimumFractionDigits: showDecimals ? 2 : 0
+                }).format(val);
+            };
 
             const schemePerformance = [
-                { name: 'Combined FPS', transactions: 457555, settled: 13895278.37, colour: '#3b82f6', icon: 'zap', change: '+12.3%', amountDiff: '+50k', volChange: 'up' },
-                { name: 'Combined BACS', transactions: 76130, settled: 28257433.26, colour: '#8b5cf6', icon: 'landmark', change: '+60.6%', amountDiff: '+£3.0M', volChange: 'up' },
-                { name: 'Mettle Cards', transactions: 323432, settled: -18831444.97, colour: '#6366f1', icon: 'credit-card', change: '+5.2%', amountDiff: '+16k', volChange: 'up' },
-                { name: 'Mettle Cash', transactions: 2046, settled: 584319.76, colour: '#10b981', icon: 'banknote', change: '-11.7%', amountDiff: '-272', volChange: 'down' },
-            ];
-
-            const monthlyReports = [
-                { name: "Mettle+ Subscription Funds", status: "On Time", desc: "Manages subscription revenue by separating VAT from income and ensuring funds are recognised in the correct accounting months." },
-                { name: "Genie Balance Report", status: "On Time", desc: "A critical monthly control that cross-verifies internal customer account balances against our aggregate scheme ledger totals." },
-                { name: "Monthly Interest", status: "On Time", desc: "Calculates and reports interest accrued and paid to customers, ensuring precise financial accounting for interest-bearing accounts." },
-                { name: "Caustic Monthly Statement", status: "On Time", desc: "Final monthly reconciliation of the Caustic master account to ensure every high-level settlement movement is fully matched." },
-                { name: "Mastercard Data Integrity", status: "Early", desc: "An audit of card presentment and settlement data to ensure full compliance with Mastercard's quality and accuracy standards." },
-                { name: "Account Switch (MCA1116)", status: "Early", desc: "Regulatory summary tracking successful Switches In, Out and Redirections handled through the Current Account Switch Service." },
-                { name: "Service User Dash (MCA1153)", status: "Early", desc: "Consolidated monthly summary of direct debits and credits for particular Service Users, ensuring scheme-level transparency." },
-                { name: "SOFA Report", status: "Early", desc: "The Standing Order File Amendment process identifies beneficiary bank changes to notify customers to update their regular payment instructions." },
-                { name: "Apple Pay Reporting", status: "Early", desc: "Verification and reporting of tokenised card transaction settlement data submitted monthly to the central NatWest Group data team." },
-                { name: "CPR Monthly MI", status: "Early", desc: "Customer Payment Review management information recorded on Zendesk and submitted to Pay.UK via the Faster Payments UI." },
-                { name: "OBIE MI Reporting", status: "On Time", desc: "Regulatory reporting covering Open Banking performance metrics and any identified NOT005 service incidents during the month." },
-                { name: "OBIE Bilateral Pack", status: "On Time", desc: "Performance insights and Open Banking volume statistics delivered as a formal deck to stakeholders and NatWest partners." },
-                { name: "Confirmation of Payee (CoP)", status: "On Time", desc: "Submission of management information to Pay.UK covering outbound CoP request volumes, success rates and response code distributions." },
+                { name: 'Combined FPS', transactions: 374580, settled: 36836501, colour: '#3b82f6', icon: 'zap', change: '+12.3%', amountDiff: '+£23M', volChange: 'up' },
+                { name: 'Combined BACS', transactions: 9929, settled: 10156317, colour: '#8b5cf6', icon: 'landmark', change: '-35.5%', amountDiff: '-£18M', volChange: 'down' },
+                { name: 'Mettle Cards', transactions: 47209, settled: -2605908, colour: '#6366f1', icon: 'credit-card', change: '-85.4%', amountDiff: '+£14M', volChange: 'down' },
+                { name: 'Mettle Cash', transactions: 606, settled: 172494, colour: '#10b981', icon: 'banknote', change: '-70.3%', amountDiff: '-£412k', volChange: 'down' },
             ];
 
             const clientData = [
                 {
                     client: 'Mettle',
-                    totalTrans: 853327,
-                    totalValue: 5850790.77,
+                    totalTrans: 428000,
+                    totalValue: 25949648,
                     accent: '#3b82f6',
-                    recsStatus: 'Reconciled',
+                    recsStatus: 'Break Identified',
                     schemes: [
-                        { name: 'FPS', trans: 453656, value: -3605615.50, colour: '#3b82f6' },
-                        { name: 'BACS', trans: 74193, value: 27703531.48, colour: '#8b5cf6' },
-                        { name: 'Cards', trans: 323432, value: -18831444.97, colour: '#6366f1' },
-                        { name: 'Cash', trans: 2046, value: 584319.76, colour: '#10b981' },
+                        { name: 'FPS', trans: 370607, value: 18326862, colour: '#3b82f6' },
+                        { name: 'BACS', trans: 9577, value: 10056200, colour: '#8b5cf6' },
+                        { name: 'Cards', trans: 47209, value: -2605908, colour: '#6366f1' },
+                        { name: 'Cash', trans: 606, value: 172494, colour: '#10b981' },
                     ],
-                    commentary: "Card expenditure hit peak month-end levels (-£18.8M). This was successfully covered by robust BACS liquidity inflows of £27.7M. 📈"
+                    commentary: "Mastercard break POB-560 raised for £876k (missing presentments). Liquidity coverage remains robust via BACS inflows. 📈"
                 },
                 {
                     client: 'The AA',
-                    totalTrans: 3143,
-                    totalValue: -5653281.13,
+                    totalTrans: 1904,
+                    totalValue: -1561291,
                     accent: '#f59e0b',
                     recsStatus: 'Reconciled',
                     schemes: [
-                        { name: 'FPS (Lending)', trans: 573, value: -8337523.00, colour: '#f59e0b' },
-                        { name: 'FPS (Savings)', trans: 633, value: 2130340.09, colour: '#fbbf24' },
-                        { name: 'BACS (Combined)', trans: 1937, value: 553901.78, colour: '#d97706' },
+                        { name: 'FPS Lending', trans: 578, value: -8172014, colour: '#f59e0b' },
+                        { name: 'FPS Savings', trans: 974, value: 6510606, colour: '#fbbf24' },
+                        { name: 'BACS (Combined)', trans: 352, value: 100117, colour: '#d97706' },
                     ],
-                    commentary: "Lending disbursements hit £8.34M. Balanced effectively by savings inflows and BACS collections to maintain a stable position. 🚀"
+                    commentary: "Loan payouts hit £8.17M. Balanced by £6.5M in savings inflows and £100k BACS collections to maintain net position. 🚀"
                 },
                 {
                     client: 'SAGA',
-                    totalTrans: 2693,
-                    totalValue: 23708076.78,
+                    totalTrans: 2421,
+                    totalValue: 20171047,
                     accent: '#ec4899',
                     recsStatus: 'Reconciled',
                     schemes: [
-                        { name: 'FPS', trans: 2693, value: 23708076.78, colour: '#ec4899' },
+                        { name: 'FPS', trans: 2421, value: 20171047, colour: '#ec4899' },
                     ],
-                    commentary: "Exceptional month-end high scaling reaching nearly £23.7M. All internal records matched scheme data perfectly. 🚀"
+                    commentary: "New scaling milestone achieved with £20.17M settled in a single week. All internal records matched scheme reporting. 🚀"
                 },
                 {
                     client: 'NW Retail & Dragenox',
@@ -124,28 +119,15 @@
                         { name: 'Retail FPS', trans: 0, value: 0, colour: '#64748b' },
                         { name: 'Dragenox FPS', trans: 0, value: 0, colour: '#94a3b8' },
                     ],
-                    commentary: "Both portfolios remained inactive this week. Balances verified as stable and reconciled against scheme reporting. ✅"
+                    commentary: "Static portfolios with zero weekly activity. All balances verified as stable and matched against scheme records. ✅"
                 }
             ];
 
-            // Aggregated Bankline Summary
             const accountSummary = [
-                { account: "Items In Transit", in: 10127943.84, out: 28203646.29, net: -18075702.45 },
-                { account: "Master Funds", in: 28076976.59, out: 10543259.09, net: 17533717.50 },
-                { account: "Client Master", in: 672216.29, out: 130231.34, net: 541984.95 },
+                { account: "Items In Transit", in: 33533887.27, out: 2251801.67, net: 31282085.60 },
+                { account: "Master Funds", in: 2236082.34, out: 33485305.60, net: -31249223.26 },
+                { account: "Client Master", in: 24588.58, out: 57450.92, net: -32862.34 },
             ];
-
-            const formatCurrency = (val) => {
-                const absVal = Math.abs(val);
-                // Hide decimals for values over £1,000 to save space
-                const showDecimals = absVal < 1000;
-                return new Intl.NumberFormat('en-GB', { 
-                    style: 'currency', 
-                    currency: 'GBP', 
-                    maximumFractionDigits: showDecimals ? 2 : 0,
-                    minimumFractionDigits: showDecimals ? 2 : 0
-                }).format(val);
-            };
 
             const maxVal = Math.max(...combinedDailyData.map(d => d.settled), 0);
             const minVal = Math.min(...combinedDailyData.map(d => d.settled), 0);
@@ -154,33 +136,32 @@
             return (
                 <div className="min-h-screen bg-[#f8fafc] font-sans flex flex-col w-full overflow-x-hidden p-4 lg:p-6 text-slate-800">
                     {/* Header */}
-                    <div className="w-full bg-white border border-slate-200 rounded-2xl px-6 py-4 flex items-center justify-between shadow-sm mb-6">
+                    <div className="w-full bg-white border border-slate-200 rounded-2xl px-6 py-4 flex items-center justify-between shadow-sm mb-6 text-slate-800">
                         <div className="flex items-center gap-4">
-                            <div className="p-2.5 bg-[#002d72] rounded-xl text-white shadow-md shadow-blue-900/20">
+                            <div className="p-2.5 bg-[#002d72] rounded-xl text-white shadow-md shadow-blue-900/20 text-white">
                                 <Icon name="globe" color="white" size={24} />
                             </div>
                             <div>
                                 <h1 className="text-xl font-black text-slate-900 tracking-tight uppercase leading-none">
                                     NatWest Boxed <span className="text-slate-300 font-normal mx-1">|</span> <span className="text-[#002d72]">Recs & Settlement</span>
                                 </h1>
-                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Week Ending 06 February 2026</p>
+                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Week Ending 13 February 2026</p>
                             </div>
                         </div>
-                        <div className="flex items-center gap-2 bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-full border border-emerald-200 shadow-sm">
-                            <Icon name="check-circle" color="#10b981" size={14} />
-                            <span className="text-[10px] font-black uppercase tracking-wider tracking-tighter">100% Reconciled (Clean Sheet)</span>
+                        <div className="flex items-center gap-2 bg-amber-50 text-amber-700 px-3 py-1.5 rounded-full border border-amber-200 shadow-sm text-[10px] font-black uppercase tracking-tighter">
+                            <Icon name="alert-circle" color="#d97706" size={14} />
+                            <span>1 Rec Break Raised</span>
                         </div>
                     </div>
 
                     <div className="flex-1 space-y-6 w-full max-w-[1600px] mx-auto flex flex-col">
-                        {/* Main Summary Grid */}
-                        <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-stretch">
-                            
-                            {/* LHS Column - Metrics & Chart */}
-                            <div className="xl:col-span-8 flex flex-col gap-6">
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        
+                        <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-stretch text-slate-800">
+                            {/* LHS Column */}
+                            <div className="xl:col-span-8 flex flex-col gap-6 text-slate-800">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-slate-800">
                                     {schemePerformance.map((scheme, idx) => (
-                                        <div key={idx} className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col justify-between transition-all hover:ring-2 hover:ring-blue-500/10">
+                                        <div key={idx} className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col justify-between transition-all hover:ring-2 hover:ring-blue-500/10 text-slate-800">
                                             <div className="flex justify-between items-center mb-3">
                                                 <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{scheme.name}</p>
                                                 <div className="p-1.5 rounded-lg" style={{ backgroundColor: `${scheme.colour}10` }}>
@@ -188,8 +169,8 @@
                                                 </div>
                                             </div>
                                             <div className="space-y-3">
-                                                <div className="flex items-center justify-between">
-                                                    <h3 className="text-xl font-black tabular-nums leading-none tracking-tight">
+                                                <div className="flex items-center justify-between text-slate-800">
+                                                    <h3 className="text-xl font-black tabular-nums leading-none tracking-tight text-slate-800">
                                                         {scheme.transactions.toLocaleString()}
                                                     </h3>
                                                     <div className={`flex flex-col items-end text-[9px] font-black ${scheme.volChange === 'up' ? 'text-emerald-500' : 'text-rose-500'}`}>
@@ -197,10 +178,10 @@
                                                             <Icon name={scheme.volChange === 'up' ? 'arrow-up' : 'arrow-down'} color="currentColor" size={10} className="mr-0.5" />
                                                             {scheme.change}
                                                         </div>
-                                                        <span className="text-[8px] opacity-70">{scheme.amountDiff} vol.</span>
+                                                        <span className="text-[8px] opacity-70 tracking-tighter whitespace-nowrap">{scheme.amountDiff}</span>
                                                     </div>
                                                 </div>
-                                                <div className="pt-2 border-t border-slate-50 flex items-center justify-between text-slate-800">
+                                                <div className="pt-2 border-t border-slate-50 flex items-center justify-between">
                                                     <span className="text-[9px] font-black text-emerald-500 uppercase tracking-tighter">Reconciled</span>
                                                     <h3 className={`text-sm font-black tabular-nums leading-none ${scheme.settled < 0 ? 'text-rose-600' : 'text-emerald-600'}`}>
                                                         {formatCurrency(scheme.settled)}
@@ -211,8 +192,8 @@
                                     ))}
                                 </div>
 
-                                <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 transition-all">
-                                    <div className="mb-6 flex justify-between items-end border-b border-slate-100 pb-4">
+                                <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 transition-all text-slate-800">
+                                    <div className="mb-6 flex justify-between items-end border-b border-slate-100 pb-4 text-[#002d72]">
                                         <div>
                                             <h3 className="text-lg font-black text-slate-800 flex items-center gap-2 uppercase tracking-tight">
                                                 <Icon name="activity" color="#002d72" size={20} /> Daily Settlement Profile
@@ -221,18 +202,12 @@
                                         </div>
                                         <div className="flex gap-4 text-[10px] font-black uppercase tracking-widest text-slate-900">
                                             <div className="flex items-center gap-1.5"><div className="h-2.5 w-2.5 bg-slate-300 rounded-full"></div> Vol.</div>
-                                            <div className="flex items-center gap-1.5"><div className="h-2.5 w-2.5 bg-[#ef4444] rounded-full"></div> Settlement (Debit)</div>
+                                            <div className="flex items-center gap-1.5"><div className="h-2.5 w-2.5 bg-[#ef4444] rounded-full"></div> Settlement</div>
                                         </div>
                                     </div>
                                     <div className="h-[300px] pt-4 text-slate-800">
                                         <ResponsiveContainer width="100%" height="100%">
                                             <ComposedChart data={combinedDailyData} margin={{ top: 10, right: 30, left: -10, bottom: 0 }}>
-                                                <defs>
-                                                    <linearGradient id="splitColor" x1="0" y1="0" x2="0" y2="1">
-                                                        <stop offset={offset} stopColor="#10b981" stopOpacity={1} />
-                                                        <stop offset={offset} stopColor="#ef4444" stopOpacity={1} />
-                                                    </linearGradient>
-                                                </defs>
                                                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
                                                 <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{fill: '#0f172a', fontSize: 11, fontWeight: 800}} dy={12} />
                                                 <YAxis yAxisId="left" axisLine={false} tickLine={false} tick={{fill: '#0f172a', fontSize: 11, fontWeight: 700}} />
@@ -240,35 +215,26 @@
                                                 <Tooltip 
                                                     cursor={{ fill: '#f1f5f9' }} 
                                                     contentStyle={{borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)'}}
-                                                    labelStyle={{ fontWeight: 'black', marginBottom: '4px' }}
-                                                    itemStyle={{ fontWeight: 'bold', fontSize: '12px' }}
                                                     formatter={(value, name) => [
-                                                        <span style={{ color: name === 'Settled' ? (value < 0 ? '#ef4444' : '#10b981') : '#64748b' }}>
-                                                            {name === 'Settled' ? formatCurrency(value) : value.toLocaleString()}
-                                                        </span>, 
-                                                        name
+                                                        name === 'settled' ? formatCurrency(value) : value.toLocaleString(), 
+                                                        name === 'settled' ? 'Settlement' : 'Transactions'
                                                     ]} 
                                                 />
-                                                <ReferenceLine yAxisId="right" y={0} stroke="#0f172a" strokeWidth={2} label={{ position: 'right', value: '0', fill: '#000', fontSize: 12, fontWeight: 900 }} />
                                                 <Bar yAxisId="left" dataKey="trans" name="Transactions" fill="#cbd5e1" radius={[6, 6, 0, 0]} barSize={40} />
                                                 <Line 
                                                     yAxisId="right" 
                                                     type="monotone" 
                                                     dataKey="settled" 
-                                                    name="Settled" 
-                                                    stroke="url(#splitColor)" 
+                                                    name="settled" 
+                                                    stroke="#ef4444" 
                                                     strokeWidth={5} 
-                                                    dot={(props) => {
-                                                        const { cx, cy, value } = props;
-                                                        return <circle cx={cx} cy={cy} r={6} fill={value < 0 ? "#ef4444" : "#10b981"} stroke="#fff" strokeWidth={2} />;
-                                                    }}
+                                                    dot={{ fill: '#ef4444', r: 6, stroke: '#fff', strokeWidth: 2 }}
                                                 />
                                             </ComposedChart>
                                         </ResponsiveContainer>
                                     </div>
                                 </div>
 
-                                {/* Operational Summary Section */}
                                 <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex-1 text-slate-800">
                                     <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-200 pb-3 mb-5 flex items-center gap-2 text-slate-800">
                                         <Icon name="message-square" color="#94a3b8" size={14} /> Operational Summary & Insights
@@ -278,27 +244,27 @@
                                             <div className="flex flex-col gap-2">
                                                 <span className="text-[#002d72] font-black uppercase text-[10px] tracking-wider text-[#002d72]">Record SAGA Scaling</span>
                                                 <p className="text-[11px] font-medium text-slate-500 leading-relaxed text-slate-500">
-                                                    SAGA achieved a significant milestone this week, scaling to nearly £23.7 million in total payments. This transition was managed effectively through standard daily operating cycles, with internal records (Genie) and scheme reporting showing 100% alignment. ✅
+                                                    SAGA achieved its highest-ever volume this week, scaling to over £20.1 million in settled value. This transition was managed effectively through standard daily operating cycles, with Genie and scheme reporting showing 100% alignment. ✅
                                                 </p>
                                             </div>
-                                            <div className="flex flex-col gap-2">
-                                                <span className="text-[#002d72] font-black uppercase text-[10px] tracking-wider text-[#002d72]">AA Lending Validation</span>
-                                                <p className="text-[11px] font-medium text-slate-600 leading-relaxed text-slate-500">
-                                                    Lending disbursements hit £8.34 million across 573 payouts. The operations team continues to perform manual validation of these high-value outflows against scheme files to maintain settlement precision and full auditability. 🚀
+                                            <div className="flex flex-col gap-2 text-slate-800">
+                                                <span className="text-[#d97706] font-black uppercase text-[10px] tracking-wider text-[#d97706]">Break Identified (POB-560)</span>
+                                                <p className="text-[11px] font-medium text-slate-500 leading-relaxed text-slate-500">
+                                                    A card reconciliation break of £876,917 was raised on 10/02 due to missing Paymentology presentment data. Engineers are currently working to re-process the missing data to resolve the ledger difference. ⚠️
                                                 </p>
                                             </div>
                                         </div>
                                         <div className="space-y-6">
                                             <div className="flex flex-col gap-2">
-                                                <span className="text-[#002d72] font-black uppercase text-[10px] tracking-wider text-[#002d72]">Mettle Liquidity & Card Spend</span>
-                                                <p className="text-[11px] font-medium text-slate-500 leading-relaxed text-slate-500">
-                                                    Card expenditure hit its month-end peak of -£18.83 million this week. This was successfully supported by robust BACS liquidity inflows of £27.7 million. Daily reconciliation tasks were prioritised to ensure the net-outflow position remained within our agreed risk appetite. 📈
+                                                <span className="text-[#002d72] font-black uppercase text-[10px] tracking-wider text-[#002d72]">Mettle Liquidity Stability</span>
+                                                <p className="text-[11px] font-medium text-slate-500 leading-relaxed text-slate-500 text-slate-500">
+                                                    Post-month-end card expenditure hit -£2.6M. This was successfully supported by robust BACS liquidity inflows of £10M. Daily reconciliation tasks were prioritised to ensure the net-outflow position remained within our agreed risk appetite. 📈
                                                 </p>
                                             </div>
-                                            <div className="flex flex-col gap-2 text-slate-500 text-slate-500">
-                                                <span className="text-[#002d72] font-black uppercase text-[10px] tracking-wider text-[#002d72]">Operational Stability</span>
-                                                <p className="text-[11px] font-medium leading-relaxed">
-                                                    The period has been operationally exceptional, with zero new reconciliation breaks raised. This clean sheet demonstrates the efficiency of the team in managing scaling volumes without compromising ledger integrity during a record-volume period. ✅
+                                            <div className="flex flex-col gap-2 text-slate-500">
+                                                <span className="text-[#002d72] font-black uppercase text-[10px] tracking-wider text-[#002d72]">AA Lending Surge</span>
+                                                <p className="text-[11px] font-medium leading-relaxed text-slate-500 text-slate-500">
+                                                    Disbursements hit £8.17M across 578 payouts. Manual validation of these high-value outflows ensured absolute settlement precision against scheme reporting during this peak volume week. 🚀
                                                 </p>
                                             </div>
                                         </div>
@@ -306,122 +272,102 @@
                                 </div>
                             </div>
 
-                            {/* RHS Column - Status Sidebar */}
-                            <div className="xl:col-span-4 flex flex-col gap-6">
-                                <div className="bg-[#002d72] text-white p-6 rounded-2xl shadow-lg border border-blue-900 flex-1 flex flex-col overflow-hidden">
-                                    <h4 className="text-[10px] font-black text-blue-300 uppercase tracking-widest mb-4 flex items-center gap-2 shrink-0">
-                                        <Icon name="check-circle" color="#10b981" size={16} /> Performance Status
+                            <div className="xl:col-span-4 flex flex-col gap-6 text-white text-white">
+                                <div className="bg-[#002d72] text-white p-6 rounded-2xl shadow-lg border border-blue-900 flex-1 flex flex-col overflow-hidden text-white">
+                                    <h4 className="text-[10px] font-black text-blue-300 uppercase tracking-widest mb-4 flex items-center gap-2 shrink-0 text-white">
+                                        <Icon name="check-circle" color="#fbbf24" size={16} /> Performance Status
                                     </h4>
                                     
-                                    <div className="flex-1 flex flex-col justify-center items-center text-center">
-                                        <div className="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mb-4 mx-auto shadow-inner shadow-emerald-500/10 text-white">
-                                            <Icon name="shield-check" color="#10b981" size={32} />
+                                    <div className="flex-1 flex flex-col justify-center items-center text-center text-white text-white">
+                                        <div className="w-16 h-16 bg-amber-500/20 rounded-full flex items-center justify-center mb-4 mx-auto shadow-inner text-white">
+                                            <Icon name="alert-circle" color="#fbbf24" size={32} />
                                         </div>
-                                        <h5 className="text-sm font-black text-white uppercase tracking-wider mb-2">Clean Sheet Week</h5>
-                                        <p className="text-[11px] text-blue-200 leading-relaxed px-4 text-white">
-                                            Zero new reconciliation breaks were identified this week. All client ledgers are fully verified, stable and matched to internal system records.
+                                        <h5 className="text-sm font-black text-white uppercase tracking-wider mb-2">1 Rec Break Raised</h5>
+                                        <p className="text-[11px] text-blue-200 leading-relaxed px-4 text-white text-white">
+                                            One break identified this week (POB-560) relating to Mettle card presentments. All other client ledgers fully verified.
                                         </p>
                                         
-                                        <div className="w-full mt-8 pt-8 border-t border-blue-800/50 space-y-4 opacity-70">
-                                            <div className="flex justify-between items-center text-[10px] font-bold text-white">
+                                        <div className="w-full mt-8 pt-8 border-t border-blue-800/50 space-y-4 opacity-70 text-white font-bold">
+                                            <div className="flex justify-between items-center text-[10px] text-white">
                                                 <span className="uppercase tracking-widest text-blue-400 font-black">Monthly Reports</span>
-                                                <span className="text-emerald-400 underline decoration-2">13 COMPLETE</span>
+                                                <span className="text-slate-400 italic">Not Due</span>
                                             </div>
-                                            <div className="flex justify-between items-center text-[10px] font-bold text-white">
-                                                <span className="uppercase tracking-widest text-blue-400 font-black text-slate-400">Verification Status</span>
-                                                <span className="text-emerald-400 underline decoration-2">ALL MATCHED</span>
+                                            <div className="flex justify-between items-center text-[10px] text-white">
+                                                <span className="uppercase tracking-widest text-blue-400 font-black text-slate-400">ZenDesk Tickets</span>
+                                                <span className="text-emerald-400 underline decoration-2 uppercase font-black">177 Solved</span>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div className="mt-4 pt-4 border-t border-blue-800/50 flex items-center justify-between text-blue-300 italic shrink-0">
-                                        <span className="text-[9px] font-bold uppercase tracking-widest">Level: Platinum</span>
+                                    <div className="mt-4 pt-4 border-t border-blue-800/50 flex items-center justify-between text-blue-300 italic shrink-0 text-blue-300 font-bold uppercase tracking-widest text-[9px]">
+                                        <span>Team Level: Platinum</span>
                                         <Icon name="award" color="#fbbf24" size={14} />
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        {/* Section 2 - Monthly Regulatory & Internal Reporting */}
+                        {/* Section 2 - Inactive Monthly Reporting */}
                         <div className="space-y-4 w-full mt-6 text-slate-800">
-                            <div className="flex items-center justify-between border-b-2 border-blue-900 pb-3">
-                                <h3 className="text-lg font-black text-[#002d72] flex items-center gap-2 uppercase tracking-wider text-[#002d72]">
+                            <div className="flex items-center justify-between border-b-2 border-blue-900 pb-3 text-[#002d72]">
+                                <h3 className="text-lg font-black flex items-center gap-2 uppercase tracking-wider text-slate-800">
                                     <Icon name="file-text" color="#002d72" size={20} /> Monthly Regulatory & Internal Reporting
                                 </h3>
                                 <div className="flex gap-4">
-                                    <span className="text-[10px] font-bold flex items-center gap-1.5 text-slate-800"><div className="h-2 w-2 bg-emerald-500 rounded-full"></div> Delivered On Time</span>
-                                    <span className="text-[10px] font-bold flex items-center gap-1.5 text-slate-800"><div className="h-2 w-2 bg-blue-500 rounded-full"></div> Delivered Early</span>
+                                    <span className="text-[10px] font-bold flex items-center gap-1.5 text-slate-400 italic font-black">No reports scheduled for this weekly period.</span>
                                 </div>
-                            </div>
-                            
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                                {monthlyReports.map((report, i) => (
-                                    <div key={i} className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col gap-2 hover:shadow-md transition-shadow group text-slate-800 text-slate-800">
-                                        <div className="flex items-center justify-between">
-                                            <span className="text-[10px] font-black text-slate-800 uppercase tracking-tighter truncate pr-2">{report.name}</span>
-                                            <span className={`text-[7px] font-black px-1.5 py-0.5 rounded uppercase shrink-0 ${
-                                                report.status === 'Early' ? 'bg-blue-500 text-white' : 'bg-emerald-500 text-white'
-                                            }`}>
-                                                {report.status}
-                                            </span>
-                                        </div>
-                                        <p className="text-[10px] text-slate-500 leading-snug font-medium line-clamp-3 group-hover:line-clamp-none transition-all">
-                                            {report.desc}
-                                        </p>
-                                    </div>
-                                ))}
                             </div>
                         </div>
 
-                        {/* Section 3 - ZenDesk Standalone Section */}
+                        {/* Section 3 - ZenDesk Standalone Section (177 Total) */}
                         <div className="space-y-4 w-full mt-6 text-slate-800 text-slate-800">
-                            <h3 className="text-lg font-black text-[#002d72] flex items-center gap-2 uppercase tracking-wider border-b-2 border-blue-900 pb-3">
+                            <h3 className="text-lg font-black text-[#002d72] flex items-center gap-2 uppercase tracking-wider border-b-2 border-blue-900 pb-3 text-[#002d72]">
                                 <Icon name="ticket" color="#002d72" size={20} /> ZenDesk Tickets
                             </h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 text-slate-800">
-                                <div className="bg-blue-50 p-5 rounded-2xl border border-blue-100 flex flex-col items-center text-center justify-center text-slate-800">
-                                    <span className="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-1 text-blue-400">Weekly Volume</span>
-                                    <p className="text-3xl font-black text-blue-900 leading-none">200</p>
-                                    <p className="text-[10px] font-bold text-blue-600 mt-2 uppercase tracking-tighter text-blue-600">100% Weekly Resolution</p>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                                <div className="bg-blue-50 p-5 rounded-2xl border border-blue-100 flex flex-col items-center text-center justify-center text-blue-900 text-blue-900 text-blue-900">
+                                    <span className="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-1 text-blue-400 text-blue-400">Weekly Volume</span>
+                                    <p className="text-3xl font-black text-blue-900 leading-none">177</p>
+                                    <p className="text-[10px] font-bold text-blue-600 mt-2 uppercase tracking-tighter text-blue-600 text-blue-600">100% Weekly Resolution</p>
                                 </div>
-                                <div className="bg-white p-5 rounded-2xl border border-slate-200 flex flex-col text-slate-800">
+                                <div className="bg-white p-5 rounded-2xl border border-slate-200 flex flex-col text-slate-800 text-slate-800 text-slate-800">
                                     <div className="flex justify-between items-center mb-3">
                                         <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Reconciliations</span>
                                         <Icon name="refresh-cw" color="#3b82f6" size={14} />
                                     </div>
-                                    <div className="flex items-end justify-between">
-                                        <p className="text-2xl font-black text-slate-800">150</p>
-                                        <p className="text-[10px] font-bold text-emerald-500 underline decoration-2">Solved</p>
+                                    <div className="flex items-end justify-between text-slate-800 text-slate-800">
+                                        <p className="text-2xl font-black text-slate-800">141</p>
+                                        <p className="text-[10px] font-bold text-emerald-500 underline decoration-2 text-emerald-500">Solved</p>
+                                    </div>
+                                </div>
+                                <div className="bg-white p-5 rounded-2xl border border-slate-200 flex flex-col text-slate-800 text-slate-800">
+                                    <div className="flex justify-between items-center mb-3 text-slate-800 text-slate-800 text-slate-800">
+                                        <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-slate-400">Settlements</span>
+                                        <Icon name="arrow-right-left" color="#10b981" size={14} />
+                                    </div>
+                                    <div className="flex items-end justify-between text-slate-800 text-slate-800 text-slate-800">
+                                        <p className="text-2xl font-black text-slate-800 text-slate-800">25</p>
+                                        <p className="text-[10px] font-bold text-emerald-500 underline decoration-2 text-emerald-500 text-emerald-500">Solved</p>
                                     </div>
                                 </div>
                                 <div className="bg-white p-5 rounded-2xl border border-slate-200 flex flex-col text-slate-800 text-slate-800">
                                     <div className="flex justify-between items-center mb-3 text-slate-800">
-                                        <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Settlements</span>
-                                        <Icon name="arrow-right-left" color="#10b981" size={14} />
-                                    </div>
-                                    <div className="flex items-end justify-between text-slate-800 text-slate-800">
-                                        <p className="text-2xl font-black text-slate-800">27</p>
-                                        <p className="text-[10px] font-bold text-emerald-500 underline decoration-2 text-slate-800">Solved</p>
-                                    </div>
-                                </div>
-                                <div className="bg-white p-5 rounded-2xl border border-slate-200 flex flex-col text-slate-800">
-                                    <div className="flex justify-between items-center mb-3 text-slate-800 text-slate-800">
                                         <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-slate-400">Bankline</span>
                                         <Icon name="landmark" color="#f59e0b" size={14} />
                                     </div>
-                                    <div className="flex items-end justify-between text-slate-800">
+                                    <div className="flex items-end justify-between text-slate-800 text-slate-800 text-slate-800">
                                         <p className="text-2xl font-black text-slate-800">5</p>
-                                        <p className="text-[10px] font-bold text-emerald-500 underline decoration-2 text-slate-800">Solved</p>
+                                        <p className="text-[10px] font-bold text-emerald-500 underline decoration-2 text-emerald-500">Solved</p>
                                     </div>
                                 </div>
-                                <div className="bg-white p-5 rounded-2xl border border-slate-200 flex flex-col text-slate-800">
-                                    <div className="flex justify-between items-center mb-3 text-slate-800">
+                                <div className="bg-white p-5 rounded-2xl border border-slate-200 flex flex-col text-slate-800 text-slate-800 text-slate-800">
+                                    <div className="flex justify-between items-center mb-3 text-slate-800 text-slate-800">
                                         <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-slate-400">Reports</span>
                                         <Icon name="file-text" color="#a855f7" size={14} />
                                     </div>
-                                    <div className="flex items-end justify-between text-slate-800">
-                                        <p className="text-2xl font-black text-slate-800 text-slate-800">18</p>
-                                        <p className="text-[10px] font-bold text-emerald-500 underline decoration-2 text-slate-800">Solved</p>
+                                    <div className="flex items-end justify-between text-slate-800 text-slate-800 text-slate-800 text-slate-800">
+                                        <p className="text-2xl font-black text-slate-800 text-slate-800">6</p>
+                                        <p className="text-[10px] font-bold text-emerald-500 underline decoration-2 text-emerald-500 text-emerald-500">Solved</p>
                                     </div>
                                 </div>
                             </div>
@@ -429,38 +375,38 @@
 
                         {/* Section 4 - Merged Bankline Liquidity Summary */}
                         <div className="space-y-4 w-full mt-6 text-slate-800 text-slate-800">
-                            <div className="flex items-center justify-between border-b-2 border-blue-900 pb-3">
-                                <h3 className="text-lg font-black text-[#002d72] flex items-center gap-2 uppercase tracking-wider text-[#002d72]">
+                            <div className="flex items-center justify-between border-b-2 border-blue-900 pb-3 text-[#002d72]">
+                                <h3 className="text-lg font-black flex items-center gap-2 uppercase tracking-wider text-[#002d72] text-[#002d72]">
                                     <Icon name="send" color="#002d72" size={20} /> Bankline Movements (Prepared & Verified)
                                 </h3>
-                                <div className="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full border border-emerald-200 flex items-center gap-1.5 shadow-sm text-emerald-700">
+                                <div className="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full border border-emerald-200 flex items-center gap-1.5 shadow-sm text-emerald-700 text-emerald-700 text-emerald-700">
                                     <Icon name="check-circle" color="#10b981" size={12} />
-                                    <span className="text-[9px] font-black uppercase tracking-widest">Secondary Verification Complete</span>
+                                    <span className="text-[9px] font-black uppercase tracking-widest text-emerald-700 text-emerald-700">21 Funding Instructions Raised</span>
                                 </div>
                             </div>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-slate-800">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-slate-800 text-slate-800 text-slate-800">
                                 {accountSummary.map((acc, i) => (
-                                    <div key={i} className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow group flex flex-col text-slate-800">
-                                        <div className="p-4 border-b border-slate-50 bg-slate-50/50 flex justify-between items-center text-slate-800">
-                                            <span className="font-black text-slate-900 uppercase text-[11px] tracking-tight">{acc.account}</span>
-                                            <div className="p-1.5 bg-blue-100 rounded-lg group-hover:bg-[#002d72] transition-colors group-hover:text-white text-blue-900">
+                                    <div key={i} className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow group flex flex-col text-slate-800 text-slate-800">
+                                        <div className="p-4 border-b border-slate-50 bg-slate-50/50 flex justify-between items-center text-slate-900 text-slate-900">
+                                            <span className="font-black uppercase text-[11px] tracking-tight">{acc.account}</span>
+                                            <div className="p-1.5 bg-blue-100 rounded-lg group-hover:bg-[#002d72] transition-colors group-hover:text-white text-blue-900 text-blue-900 text-blue-900">
                                                 <Icon name="landmark" size={14} />
                                             </div>
                                         </div>
-                                        <div className="p-5 space-y-6 flex-1 text-slate-800 text-slate-800">
-                                            <div className="grid grid-cols-2 gap-4">
-                                                <div className="space-y-1 text-slate-800">
-                                                    <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest text-slate-400">Weekly Total In</p>
+                                        <div className="p-5 space-y-6 flex-1 text-slate-800 text-slate-800 text-slate-800 text-slate-800">
+                                            <div className="grid grid-cols-2 gap-4 text-slate-800 text-slate-800 text-slate-800">
+                                                <div className="space-y-1 text-slate-800 text-slate-800">
+                                                    <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest text-slate-400 text-slate-400">Weekly Total In (Credit)</p>
                                                     <p className="text-[13px] font-black text-emerald-600 tabular-nums">{formatCurrency(acc.in)}</p>
                                                 </div>
-                                                <div className="space-y-1 text-right text-slate-800">
-                                                    <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest text-slate-400">Weekly Total Out</p>
-                                                    <p className="text-[13px] font-black text-rose-600 tabular-nums text-rose-600">{formatCurrency(acc.out)}</p>
+                                                <div className="space-y-1 text-right text-slate-800 text-slate-800">
+                                                    <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest text-slate-400 text-slate-400">Weekly Total Out (Debit)</p>
+                                                    <p className="text-[13px] font-black text-rose-600 tabular-nums text-rose-600 text-rose-600">{formatCurrency(acc.out)}</p>
                                                 </div>
                                             </div>
-                                            <div className="pt-4 border-t border-slate-50 flex flex-col gap-1.5 text-slate-800">
-                                                <div className="flex items-center justify-between text-slate-800">
-                                                    <span className="text-[9px] font-bold text-slate-400 uppercase text-slate-400">Final Net Balance</span>
+                                            <div className="pt-4 border-t border-slate-50 flex flex-col gap-1.5 text-slate-800 text-slate-800 text-slate-800 text-slate-800 text-slate-800">
+                                                <div className="flex items-center justify-between text-slate-800 text-slate-800">
+                                                    <span className="text-[9px] font-bold text-slate-400 uppercase text-slate-400 text-slate-400">Final Net Balance</span>
                                                     <span className={`text-[10px] font-black px-2 py-0.5 rounded uppercase ${acc.net < 0 ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700'}`}>
                                                         {acc.net < 0 ? 'Debit Position' : 'Credit Position'}
                                                     </span>
@@ -477,34 +423,34 @@
 
                         {/* Section 5 - Client Summary Cards */}
                         <div className="space-y-4 pb-8 w-full mt-6 text-slate-800 text-slate-800">
-                            <h3 className="text-lg font-black text-slate-800 flex items-center gap-2 mb-2 uppercase tracking-wider text-slate-800">
+                            <h3 className="text-lg font-black text-slate-800 flex items-center gap-2 mb-2 uppercase tracking-wider text-slate-800 text-slate-800 text-slate-800 text-slate-800">
                                 <Icon name="users" color="#f59e0b" size={20} /> Client Performance Breakdown
                             </h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-slate-800">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-slate-800 text-slate-800 text-slate-800">
                                 {clientData.map((client, idx) => (
-                                    <div key={idx} className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col hover:shadow-md transition-all group">
+                                    <div key={idx} className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col hover:shadow-md transition-all group text-slate-800 text-slate-800">
                                         <div className="p-5 border-b border-slate-50 relative" style={{ backgroundColor: `${client.accent}08` }}>
-                                            <div className="flex justify-between items-start">
+                                            <div className="flex justify-between items-start text-slate-800 text-slate-800">
                                                 <h4 className="text-lg font-black text-slate-900 tracking-tighter uppercase">{client.client}</h4>
-                                                <div className={`h-1.5 w-1.5 rounded-full bg-emerald-500`}></div>
+                                                <div className={`h-1.5 w-1.5 rounded-full ${client.recsStatus === 'Reconciled' ? 'bg-emerald-500' : 'bg-amber-500 animate-pulse'}`}></div>
                                             </div>
-                                            <div className="flex items-center justify-between mt-4 text-slate-800">
+                                            <div className="flex items-center justify-between mt-4 text-slate-800 text-slate-800">
                                                 <div>
-                                                    <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest text-slate-400 font-bold text-slate-400">Transactions</p>
-                                                    <p className="text-sm font-black tabular-nums">{client.totalTrans.toLocaleString()}</p>
+                                                    <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest text-slate-400 text-slate-400">Transactions</p>
+                                                    <p className="text-sm font-black tabular-nums text-slate-800 text-slate-800">{client.totalTrans.toLocaleString()}</p>
                                                 </div>
-                                                <div className="text-right text-slate-800">
-                                                    <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest text-slate-400 font-bold text-slate-400">Total Value</p>
+                                                <div className="text-right text-slate-800 text-slate-800">
+                                                    <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest text-slate-400 text-slate-400">Total Value</p>
                                                     <p className={`text-sm font-black tabular-nums ${client.totalValue < 0 ? 'text-rose-500' : 'text-emerald-500'}`}>
                                                         {formatCurrency(client.totalValue)}
                                                     </p>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="p-5 space-y-2.5 flex-grow bg-white text-slate-800">
+                                        <div className="p-5 space-y-2.5 flex-grow bg-white text-slate-800 text-slate-800 text-slate-800 text-slate-800 text-slate-800">
                                             {client.schemes.map((scheme, sIdx) => (
-                                                <div key={sIdx} className="flex items-center justify-between p-1 rounded-lg hover:bg-slate-50 transition-colors text-[9px] text-slate-800">
-                                                    <div className="flex items-center gap-1.5 font-bold text-slate-600 uppercase tracking-tighter">
+                                                <div key={sIdx} className="flex items-center justify-between p-1 rounded-lg hover:bg-slate-50 transition-colors text-[9px] text-slate-800 text-slate-800 text-slate-800 text-slate-800">
+                                                    <div className="flex items-center gap-1.5 font-bold text-slate-600 uppercase tracking-tighter text-slate-600 text-slate-600 text-slate-600">
                                                         <div className="h-1 w-1 rounded-full shrink-0" style={{ backgroundColor: scheme.colour }}></div>
                                                         <span className="truncate max-w-[80px]">{scheme.name}</span>
                                                     </div>
@@ -514,8 +460,8 @@
                                                 </div>
                                             ))}
                                         </div>
-                                        <div className="p-4 bg-slate-50/80 border-t border-slate-100 min-h-[80px] flex items-center text-slate-500 text-slate-500">
-                                            <p className="text-[10px] text-slate-500 leading-relaxed font-semibold italic text-center w-full text-slate-500">
+                                        <div className="p-4 bg-slate-50/80 border-t border-slate-100 min-h-[80px] flex items-center text-slate-500 text-slate-500 text-slate-500 text-slate-500 text-slate-500">
+                                            <p className="text-[10px] text-slate-500 leading-relaxed font-semibold italic text-center w-full">
                                                 "{client.commentary}"
                                             </p>
                                         </div>
@@ -523,7 +469,7 @@
                                 ))}
                             </div>
                             <div className="w-full text-center pt-4 opacity-40">
-                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic text-center underline">Goals for 2026: Scaling Safely & Automating Manual Touchpoints</p>
+                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic text-center underline text-slate-400 text-slate-400 text-slate-400">Goals for 2026: Scaling Safely & Automating Manual Touchpoints</p>
                             </div>
                         </div>
                     </div>
